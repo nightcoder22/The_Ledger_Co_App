@@ -91,9 +91,12 @@ public class FileProcessor {
     private void processPayment ( Payment payment ) throws UserNotFoundException {
         BankTransaction bankTransaction = getBankTransactionForBorrower ( payment.getBorrower ( ), payment.getBankName ( ) );
         Emi emi = new Emi ( bankTransaction.getEmiAmount ( ) );
+        if ( payment.getEmiNo ( ) == 0 ){
+            emi.setEmiAmount ( 0 );
+        }
         emi.setLumpSumAmount ( payment.getLumpSumAmount ( ) );
-        bankTransaction.getEmis ( ).set ( payment.getEmiNo ( ) - 1, emi );
-        bankTransaction.modifyList ( payment.getEmiNo ( ) - 1 );
+        bankTransaction.getEmis ( ).set ( payment.getEmiNo ( ), emi );
+        bankTransaction.modifyList ( payment.getEmiNo ( ) );
     }
 
     /**

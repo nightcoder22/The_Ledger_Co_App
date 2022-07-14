@@ -32,9 +32,12 @@ public class BankTransaction {
      */
     private void generateList ( ) {
         int noOfEmis = this.period * 12;
-        for ( int i = 0; i < noOfEmis; i++ ) {
+        for ( int i = 0; i <= noOfEmis; i++ ) {
             Emi emi = new Emi ( this.emiAmount );
-            emi.setNoOfEmiLeft ( noOfEmis - i - 1 );
+            if ( i == 0 ){
+                emi.setEmiAmount ( 0 );
+            }
+            emi.setNoOfEmiLeft ( noOfEmis - i );
             this.getEmis ( ).add ( emi );
         }
     }
@@ -68,7 +71,7 @@ public class BankTransaction {
      */
     public double amountPaid ( int emiNo ) {
         double total = 0;
-        for ( int i = 0; i < emiNo; i++ ) {
+        for ( int i = 0; i <= emiNo; i++ ) {
             Emi emi = this.getEmis ( ).get ( i );
             total = total + emi.getEmiAmount ( ) + emi.getLumpSumAmount ( );
         }
@@ -81,10 +84,7 @@ public class BankTransaction {
      * @return no of emi left
      */
     public int emisLeft ( int emiNo ) {
-        if ( emiNo == 0 ) {
-            return this.getPeriod ( ) * 12;
-        }
-        return this.getEmis ( ).get ( emiNo - 1 ).getNoOfEmiLeft ( );
+        return this.getEmis ( ).get ( emiNo ).getNoOfEmiLeft ( );
     }
 
     public String getBank ( ) {
